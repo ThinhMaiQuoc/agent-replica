@@ -1,7 +1,7 @@
-name: kb-sync-agent
+name: agent-replica
 region: nyc
 jobs:
-  - name: kb-sync-agent
+  - name: agent-replica
     kind: SCHEDULED
     dockerfile_path: Dockerfile
     source_dir: /

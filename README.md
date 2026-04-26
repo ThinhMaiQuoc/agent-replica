@@ -1,4 +1,4 @@
-# kb-sync-agent
+# agent-replica
 
 Small scheduled ingestion job for an OptiBot-style support assistant.
 
@@ -16,8 +16,8 @@ Small scheduled ingestion job for an OptiBot-style support assistant.
 ```bash
 python main.py --dry-run
 python main.py --bootstrap-vector-store
-docker build -t kb-sync-agent .
-docker run --rm --env-file .env kb-sync-agent
+docker build -t agent-replica .
+docker run --rm --env-file .env agent-replica
 ```
 
 ## Deliverables
