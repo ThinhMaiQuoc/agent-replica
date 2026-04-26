@@ -1,0 +1,43 @@
+name: kb-sync-agent
+region: nyc
+jobs:
+  - name: kb-sync-agent
+    kind: SCHEDULED
+    dockerfile_path: Dockerfile
+    source_dir: /
+    run_command: python main.py
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    schedule:
+      cron: "0 2 * * *"
+      time_zone: America/Chicago
+    envs:
+      - key: OPENAI_API_KEY
+        scope: RUN_TIME
+        type: SECRET
+      - key: OPENAI_VECTOR_STORE_ID
+        scope: RUN_TIME
+        type: SECRET
+      - key: OPENAI_ASSISTANT_ID
+        scope: RUN_TIME
+        type: SECRET
+      - key: OPENAI_VECTOR_STORE_NAME
+        scope: RUN_TIME
+        type: GENERAL
+        value: signal-cache-kb
+      - key: OPENAI_VECTOR_STORE_DESCRIPTION
+        scope: RUN_TIME
+        type: GENERAL
+        value: OptiBot support knowledge base
+      - key: ZENDESK_BASE_URL
+        scope: RUN_TIME
+        type: GENERAL
+        value: https://support.optisigns.com
+      - key: ZENDESK_LOCALE
+        scope: RUN_TIME
+        type: GENERAL
+        value: en-us
+      - key: ARTICLE_LIMIT
+        scope: RUN_TIME
+        type: GENERAL
+        value: "30"
