@@ -10,7 +10,7 @@ jobs:
     instance_size_slug: basic-xxs
     schedule:
       cron: "0 2 * * *"
-      time_zone: America/Chicago
+      time_zone: Asia/Ho_Chi_Minh
     envs:
       - key: OPENAI_API_KEY
         scope: RUN_TIME
@@ -18,17 +18,6 @@ jobs:
       - key: OPENAI_VECTOR_STORE_ID
         scope: RUN_TIME
         type: SECRET
-      - key: OPENAI_ASSISTANT_ID
-        scope: RUN_TIME
-        type: SECRET
-      - key: OPENAI_VECTOR_STORE_NAME
-        scope: RUN_TIME
-        type: GENERAL
-        value: signal-cache-kb
-      - key: OPENAI_VECTOR_STORE_DESCRIPTION
-        scope: RUN_TIME
-        type: GENERAL
-        value: OptiBot support knowledge base
       - key: ZENDESK_BASE_URL
         scope: RUN_TIME
         type: GENERAL

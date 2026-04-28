@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 
 from app.config import ConfigError, load_config
+from app.manifest import build_manifest, write_manifest
 from app.markdown import render_articles
 from app.openai_store import (
     attach_vector_store_to_assistant,
@@ -41,6 +42,20 @@ def main(argv: list[str] | None = None) -> int:
         )
 
         if config.dry_run:
+            write_manifest(
+                config.manifest_path,
+                build_manifest(
+                    dry_run=True,
+                    vector_store_id=None,
+                    zendesk_base_url=config.zendesk_base_url,
+                    zendesk_locale=config.zendesk_locale,
+                    article_limit=config.article_limit,
+                    fetched_articles=len(articles),
+                    written_docs=len(rendered_articles),
+                    counts={},
+                    rendered_articles=rendered_articles,
+                ),
+            )
             return 0
 
         client = create_client(config.openai_api_key or "")
@@ -70,7 +85,7 @@ def main(argv: list[str] | None = None) -> int:
             logging.info("Attached vector store %s to assistant %s", vector_store_id, config.openai_assistant_id)
 
         logging.info(
-            "Phase 3 checkpoint: vector_store_id=%s added=%s updated=%s skipped=%s uploaded_files=%s "
+            "Sync complete: vector_store_id=%s added=%s updated=%s skipped=%s uploaded_files=%s "
             "embedded_chunks=%s estimated_chunks=%s",
             vector_store_id,
             sync_result.added,
@@ -79,6 +94,27 @@ def main(argv: list[str] | None = None) -> int:
             sync_result.uploaded_files,
             sync_result.embedded_chunks,
             sync_result.estimated_chunks,
+        )
+        write_manifest(
+            config.manifest_path,
+            build_manifest(
+                dry_run=False,
+                vector_store_id=vector_store_id,
+                zendesk_base_url=config.zendesk_base_url,
+                zendesk_locale=config.zendesk_locale,
+                article_limit=config.article_limit,
+                fetched_articles=len(articles),
+                written_docs=len(rendered_articles),
+                counts={
+                    "added": sync_result.added,
+                    "updated": sync_result.updated,
+                    "skipped": sync_result.skipped,
+                    "uploaded_files": sync_result.uploaded_files,
+                    "embedded_chunks": sync_result.embedded_chunks,
+                    "estimated_chunks": sync_result.estimated_chunks,
+                },
+                rendered_articles=rendered_articles,
+            ),
         )
         return 0
     except Exception:

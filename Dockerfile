@@ -12,6 +12,7 @@ COPY app ./app
 COPY main.py .
 COPY PLAN.md .
 COPY README.md .
+COPY .env.sample .
 
 RUN mkdir -p docs state screenshots
 
