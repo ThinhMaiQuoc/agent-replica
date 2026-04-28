@@ -25,6 +25,7 @@ python main.py --dry-run
 python main.py --bootstrap-vector-store
 python main.py
 python main.py --attach-assistant
+```
 
 ## Chunk Strategy
 - Each article is uploaded as one file.
@@ -33,13 +34,15 @@ python main.py --attach-assistant
 - estimated_chunks is the fallback estimate using ceil(len(text) / 4) with the documented 800-token chunks and 400-token overlap assumption.
 
 ## Docker Run
+```bash
 docker build -t agent-replica .
 docker run --rm --env-file .env agent-replica
+```
 
 ## DigitalOcean Job
 - Production should run plain python main.py.
 - OPENAI_VECTOR_STORE_ID is required in production; do not use --bootstrap-vector-store in the scheduled job path.
 
 ## TODO
-- Screenshot path: screenshots/playground-answer.png
-- Deployed DigitalOcean logs URL: TODO after live deployment
+- Screenshot path: `screenshots/playground-answer.png`
+- Deployed DigitalOcean logs URL: `TODO after live deployment`
