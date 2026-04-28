@@ -3,6 +3,5 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 *.pyc
-docs/*.md
 state/manifest.json
 screenshots/*.png
